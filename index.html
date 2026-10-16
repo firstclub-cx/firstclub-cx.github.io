@@ -17,9 +17,18 @@
 </style>
 </head>
 <body>
-<iframe id="f" src="https://script.google.com/a/macros/firstclub.co.in/s/AKfycbwfkj5Z_nMfWoHa_1AcSXRb3cOBd8xSZh6BvOvj5usvQvf7BCGsVNGvHeEj-7NTXOh-/exec" allow="clipboard-write"></iframe>
+<iframe id="f" src="https://script.google.com/a/macros/firstclub.co.in/s/AKfycbwfkj5Z_nMfWoHa_1AcSXRb3cOBd8xSZh6BvOvj5usvQvf7BCGsVNGvHeEj-7NTXOh-/exec" allow="clipboard-write; camera; geolocation"></iframe>
 <div id="help">If you see a sign-in error, open the app once in Chrome while signed in as your firstclub account, then come back.<br><a href="https://script.google.com/a/macros/firstclub.co.in/s/AKfycbwfkj5Z_nMfWoHa_1AcSXRb3cOBd8xSZh6BvOvj5usvQvf7BCGsVNGvHeEj-7NTXOh-/exec" target="_blank" rel="noopener">Open in Chrome</a></div>
 <script>
+  // The app runs inside Google's frames, where phones block calls and location. It asks this page to do them.
+  addEventListener('message', function (e) {
+    var d = e.data || {}; if (d.cx === 'tel' && /^\+?\d{8,13}$/.test(d.n)) location.href = 'tel:' + d.n;
+    if (d.cx === 'loc' && e.source) {
+      var reply = function (x) { e.source.postMessage({ cx: 'loc', id: d.id, lat: x && x.lat, lng: x && x.lng, acc: x && x.acc, err: x ? '' : 'unavailable' }, '*'); };
+      if (!navigator.geolocation) return reply(null);
+      navigator.geolocation.getCurrentPosition(function (p) { reply({ lat: p.coords.latitude, lng: p.coords.longitude, acc: Math.round(p.coords.accuracy) }); }, function () { reply(null); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+    }
+  });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 </script>
 </body>
