@@ -1,6 +1,6 @@
 {
-  "name": "First club - Cx",
-  "short_name": "FirstClub Cx",
+  "name": "firstclub-ops",
+  "short_name": "firstclub-ops",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
